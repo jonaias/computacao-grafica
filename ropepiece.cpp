@@ -26,6 +26,6 @@ RopePiece::RopePiece(string name,GLUquadricObj *quadratic):Object(name,quadratic
 
 
 void RopePiece::Draw(){
+	Object::Draw();
 	gluCylinder(quadratic,0.025f,0.025f,0.5f,20,20);
-	cout << "Drawing:"<< this->name << endl;
 }
