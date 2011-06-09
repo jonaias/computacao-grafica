@@ -1,41 +1,51 @@
-/*
- * This code was created by Jeff Molofee '99 
- * (ported to Linux/SDL by Ti Leggett '01)
- *
- * If you've found this code useful, please let me know.
- *
- * Visit Jeff at http://nehe.gamedev.net/
- * 
- * or for port-specific comments, questions, bugreports etc. 
- * email to leggett@eecs.tulane.edu
- */
- 
-#include <stdio.h>
-#include <stdlib.h>
-#include <GL/gl.h>
+//      main.cpp
+//      
+//      Copyright 2011 jonas <jonaias@jonaias-MX6453>
+//      
+//      This program is free software; you can redistribute it and/or modify
+//      it under the terms of the GNU General Public License as published by
+//      the Free Software Foundation; either version 2 of the License, or
+//      (at your option) any later version.
+//      
+//      This program is distributed in the hope that it will be useful,
+//      but WITHOUT ANY WARRANTY; without even the implied warranty of
+//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//      GNU General Public License for more details.
+//      
+//      You should have received a copy of the GNU General Public License
+//      along with this program; if not, write to the Free Software
+//      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+//      MA 02110-1301, USA.
+
+#include <SDL/SDL.h>
 #include <GL/glu.h>
-#include "SDL.h"
+#include <GL/gl.h>
+#include <iostream>
+#include <list>
+#include <string>
+
+
+#include "createscene.h"
+#include "object.h"
 
 /* screen width, height, and bit depth */
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT 480
-#define SCREEN_BPP     16
-
-/* Set up some booleans */
-#define TRUE  1
-#define FALSE 0
+#define SCREEN_WIDTH	800
+#define SCREEN_HEIGHT	600
+#define SCREEN_BPP     32
 
 /* This is our SDL surface */
 SDL_Surface *surface;
 
 /* Whether or not lighting is on */
-int light = FALSE;
+int light = false;
 
 GLfloat xrot;      /* X Rotation */
 GLfloat yrot;      /* Y Rotation */
 GLfloat xspeed;    /* X Rotation Speed */
 GLfloat yspeed;    /* Y Rotation Speed */
-GLfloat z = -5.0f; /* Depth Into The Screen */
+GLfloat z = -1.0f; /* Depth Into The Screen */
+
+GLUquadricObj *quadratic;	// 
 
 /* Ambient Light Values ( NEW ) */
 GLfloat LightAmbient[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
@@ -46,6 +56,8 @@ GLfloat LightPosition[] = { 0.0f, 0.0f, 2.0f, 1.0f };
 
 GLuint filter;     /* Which Filter To Use */
 GLuint texture[3]; /* Storage for 3 textures */
+
+Object *scene;
 
 
 /* function to release/destroy our resources and restoring the old desktop */
@@ -62,17 +74,17 @@ void Quit( int returnCode )
 int LoadGLTextures( )
 {
     /* Status indicator */
-    int Status = FALSE;
+    int Status = false;
 
     /* Create storage space for the texture */
     SDL_Surface *TextureImage[1]; 
 
     /* Load The Bitmap, Check For Errors, If Bitmap's Not Found Quit */
-    if ( ( TextureImage[0] = SDL_LoadBMP( "data/crate.bmp" ) ) )
+    if ( ( TextureImage[0] = SDL_LoadBMP( "data/rope.bmp" ) ) )
         {
 
 	    /* Set the status to true */
-	    Status = TRUE;
+	    Status = true;
 
 	    /* Create The Texture */
 	    glGenTextures( 3, &texture[0] );
@@ -158,7 +170,7 @@ int resizeWindow( int width, int height )
     /* Reset The View */
     glLoadIdentity( );
 
-    return( TRUE );
+    return(true);
 }
 
 /* function to handle key press events */
@@ -236,12 +248,12 @@ void handleKeyPress( SDL_keysym *keysym )
 }
 
 /* general OpenGL initialization function */
-int initGL( GLvoid )
+int initGL( void )
 {
 
     /* Load in the texture */
     if ( !LoadGLTextures( ) )
-	return FALSE;
+	return false;
 
     /* Enable Texture Mapping ( NEW ) */
     glEnable( GL_TEXTURE_2D );
@@ -259,7 +271,7 @@ int initGL( GLvoid )
     glEnable( GL_DEPTH_TEST );
 
     /* The Type Of Depth Test To Do */
-    glDepthFunc( GL_LEQUAL );
+    glDepthFunc( GL_LESS );
 
     /* Really Nice Perspective Calculations */
     glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
@@ -275,12 +287,20 @@ int initGL( GLvoid )
 
     /* Enable Light One */
     glEnable( GL_LIGHT1 );
+    
+    quadratic = gluNewQuadric();
+    
+    // Can also use GLU_NONE, GLU_FLAT
+    gluQuadricNormals(quadratic, GLU_SMOOTH);   // Create Smooth Normals
+    gluQuadricTexture(quadratic, GL_TRUE);      // Create Texture Coords ( NEW )
 
-    return( TRUE );
+	scene = createScene(quadratic);
+
+    return( true );
 }
 
 /* Here goes our drawing code */
-int drawGLScene( GLvoid )
+int drawGLScene( void )
 {
     /* These are to calculate our fps */
     static GLint T0     = 0;
@@ -301,81 +321,9 @@ int drawGLScene( GLvoid )
     /* Select A Texture Based On filter */
     glBindTexture( GL_TEXTURE_2D, texture[filter] );
 
-    /* Start Drawing Quads */
-    glBegin( GL_QUADS );
-      /* Front Face */
-      /* Normal Pointing Towards Viewer */
-      glNormal3f( 0.0f, 0.0f, 1.0f );
-      /* Point 1 (Front) */
-      glTexCoord2f( 1.0f, 0.0f ); glVertex3f( -1.0f, -1.0f,  1.0f );
-      /* Point 2 (Front) */
-      glTexCoord2f( 0.0f, 0.0f ); glVertex3f(  1.0f, -1.0f,  1.0f );
-      /* Point 3 (Front) */
-      glTexCoord2f( 0.0f, 1.0f ); glVertex3f(  1.0f,  1.0f,  1.0f );
-      /* Point 4 (Front) */
-      glTexCoord2f( 1.0f, 1.0f ); glVertex3f( -1.0f,  1.0f,  1.0f );
-
-      /* Back Face */
-      /* Normal Pointing Away From Viewer */
-      glNormal3f( 0.0f, 0.0f, -1.0f);
-      /* Point 1 (Back) */
-      glTexCoord2f( 0.0f, 0.0f ); glVertex3f( -1.0f, -1.0f, -1.0f );
-      /* Point 2 (Back) */
-      glTexCoord2f( 0.0f, 1.0f ); glVertex3f( -1.0f,  1.0f, -1.0f );
-      /* Point 3 (Back) */
-      glTexCoord2f( 1.0f, 1.0f ); glVertex3f(  1.0f,  1.0f, -1.0f );
-      /* Point 4 (Back) */
-      glTexCoord2f( 1.0f, 0.0f ); glVertex3f(  1.0f, -1.0f, -1.0f );
-
-      /* Top Face */
-      /* Normal Pointing Up */
-      glNormal3f( 0.0f, 1.0f, 0.0f );
-      /* Point 1 (Top) */
-      glTexCoord2f( 1.0f, 1.0f ); glVertex3f( -1.0f,  1.0f, -1.0f );
-      /* Point 2 (Top) */
-      glTexCoord2f( 1.0f, 0.0f ); glVertex3f( -1.0f,  1.0f,  1.0f );
-      /* Point 3 (Top) */
-      glTexCoord2f( 0.0f, 0.0f ); glVertex3f(  1.0f,  1.0f,  1.0f );
-      /* Point 4 (Top) */
-      glTexCoord2f( 0.0f, 1.0f ); glVertex3f(  1.0f,  1.0f, -1.0f );
-
-      /* Bottom Face */
-      /* Normal Pointing Down */
-      glNormal3f( 0.0f, -1.0f, 0.0f );
-      /* Point 1 (Bottom) */
-      glTexCoord2f( 0.0f, 1.0f ); glVertex3f( -1.0f, -1.0f, -1.0f );
-      /* Point 2 (Bottom) */
-      glTexCoord2f( 1.0f, 1.0f ); glVertex3f(  1.0f, -1.0f, -1.0f );
-      /* Point 3 (Bottom) */
-      glTexCoord2f( 1.0f, 0.0f ); glVertex3f(  1.0f, -1.0f,  1.0f );
-      /* Point 4 (Bottom) */
-      glTexCoord2f( 0.0f, 0.0f ); glVertex3f( -1.0f, -1.0f,  1.0f );
-
-      /* Right face */
-      /* Normal Pointing Right */
-      glNormal3f( 1.0f, 0.0f, 0.0f);
-      /* Point 1 (Right) */
-      glTexCoord2f( 0.0f, 0.0f ); glVertex3f( 1.0f, -1.0f, -1.0f );
-      /* Point 2 (Right) */
-      glTexCoord2f( 0.0f, 1.0f ); glVertex3f( 1.0f,  1.0f, -1.0f );
-      /* Point 3 (Right) */
-      glTexCoord2f( 1.0f, 1.0f ); glVertex3f( 1.0f,  1.0f,  1.0f );
-      /* Point 4 (Right) */
-      glTexCoord2f( 1.0f, 0.0f ); glVertex3f( 1.0f, -1.0f,  1.0f );
-
-      /* Left Face*/
-      /* Normal Pointing Left */
-      glNormal3f( -1.0f, 0.0f, 0.0f );
-      /* Point 1 (Left) */
-      glTexCoord2f( 1.0f, 0.0f ); glVertex3f( -1.0f, -1.0f, -1.0f );
-      /* Point 2 (Left) */
-      glTexCoord2f( 0.0f, 0.0f ); glVertex3f( -1.0f, -1.0f,  1.0f );
-      /* Point 3 (Left) */
-      glTexCoord2f( 0.0f, 1.0f ); glVertex3f( -1.0f,  1.0f,  1.0f );
-      /* Point 4 (Left) */
-      glTexCoord2f( 1.0f, 1.0f ); glVertex3f( -1.0f,  1.0f, -1.0f );
-    glEnd();
-
+	
+	scene->Draw();
+	
     /* Draw it to the screen */
     SDL_GL_SwapBuffers( );
 
@@ -395,21 +343,22 @@ int drawGLScene( GLvoid )
     xrot += xspeed; /* Add xspeed To xrot */
     yrot += yspeed; /* Add yspeed To yrot */
 
-    return( TRUE );
+    return(true);
 }
 
-int main( int argc, char **argv )
+
+int main(int argc, char **argv)
 {
-    /* Flags to pass to SDL_SetVideoMode */
+	/* Flags to pass to SDL_SetVideoMode */
     int videoFlags;
     /* main loop variable */
-    int done = FALSE;
+    int done = false;
     /* used to collect events */
     SDL_Event event;
     /* this holds some info about our display */
     const SDL_VideoInfo *videoInfo;
     /* whether or not the window is active */
-    int isActive = TRUE;
+    int isActive = true;
 
     /* initialize SDL */
     if ( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -480,9 +429,9 @@ int main( int argc, char **argv )
 			     * shouldn't draw the screen
 			     */
 			    if ( event.active.gain == 0 )
-				isActive = FALSE;
+				isActive = false;
 			    else
-				isActive = TRUE;
+				isActive = true;
 			    break;			    
 			case SDL_VIDEORESIZE:
 			    /* handle resize event */
@@ -518,5 +467,6 @@ int main( int argc, char **argv )
     Quit( 0 );
 
     /* Should never get here */
-    return( 0 );
+    return 0 ;
 }
+
