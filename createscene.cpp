@@ -18,7 +18,56 @@
 //      MA 02110-1301, USA.
 
 #include "createscene.h"
+#include <SDL/SDL_image.h>
+
+#define NUM_TEXTURES 10
+
+GLuint texture[NUM_TEXTURES]; /* Storage for 3 textures */
+
+/* function to load in bitmap as a GL texture */
+void LoadTexture(string img_path,int index )
+{
+
+    /* Create storage space for the texture */
+    SDL_Surface *TextureImage; 
+
+    /* Load The Bitmap, Check For Errors, If Bitmap's Not Found Quit */
+    if ( ( TextureImage = IMG_Load( img_path.c_str() ) ) )
+        {
+
+	    /* Load in texture 3 */
+	    /* Typical Texture Generation Using Data From The Bitmap */
+	    glBindTexture( GL_TEXTURE_2D, texture[index] );
+
+	    /* Mipmapped Filtering */
+	    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+			     GL_LINEAR_MIPMAP_NEAREST );
+	    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+			     GL_LINEAR );
+
+	    /* Generate The MipMapped Texture ( NEW ) */
+	    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, TextureImage->w,
+			       TextureImage->h, GL_BGR,
+			       GL_UNSIGNED_BYTE, TextureImage->pixels );
+			       
+		 SDL_FreeSurface(TextureImage);
+		
+        }
+    else{
+		cout<<"Texture " << img_path << " not loaded"<<endl;
+	}
+
+}
 
 Object* createScene(GLUquadricObj *quadratic){
-	return new RopePiece("objeto1",quadratic);
+	
+	/* Create The Texture */
+	glGenTextures( NUM_TEXTURES, &texture[0] );
+	
+	/* Load in the texture */
+    LoadTexture("data/rope.bmp",0);
+		
+	Object *o = new Cylinder("objeto1",quadratic);
+	o->LoadTexture(&texture[0]);
+	return o;
 }

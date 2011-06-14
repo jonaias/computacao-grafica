@@ -35,14 +35,20 @@ class Object
 		Object(string name,GLUquadricObj *quadratic);
 		virtual ~Object();
 		virtual void Draw();
+		virtual void DrawModel();
+		virtual void SetTexture();
 		void add(Object *object);
+		void LoadTexture(GLuint *texture);
+		void SetMatrix();
 	
 	protected:
 		list<Object*> childs;
-		float rel_x,rel_y,rel_z;
 		string name;
 		GLUquadricObj *quadratic;
-		
+		GLuint *texture;
+		GLfloat rotate_a,rotate_x,rotate_y,rotate_z;
+		GLfloat scale_x,scale_y,scale_z;
+		GLfloat translate_x,translate_y,translate_z;
 		/* add your private declarations */
 };
 

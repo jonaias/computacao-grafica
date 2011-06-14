@@ -18,6 +18,7 @@
 //      MA 02110-1301, USA.
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include <GL/glu.h>
 #include <GL/gl.h>
 #include <iostream>
@@ -55,7 +56,6 @@ GLfloat LightDiffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat LightPosition[] = { 0.0f, 0.0f, 2.0f, 1.0f };
 
 GLuint filter;     /* Which Filter To Use */
-GLuint texture[3]; /* Storage for 3 textures */
 
 Object *scene;
 
@@ -70,77 +70,6 @@ void Quit( int returnCode )
     exit( returnCode );
 }
 
-/* function to load in bitmap as a GL texture */
-int LoadGLTextures( )
-{
-    /* Status indicator */
-    int Status = false;
-
-    /* Create storage space for the texture */
-    SDL_Surface *TextureImage[1]; 
-
-    /* Load The Bitmap, Check For Errors, If Bitmap's Not Found Quit */
-    if ( ( TextureImage[0] = SDL_LoadBMP( "data/rope.bmp" ) ) )
-        {
-
-	    /* Set the status to true */
-	    Status = true;
-
-	    /* Create The Texture */
-	    glGenTextures( 3, &texture[0] );
-
-	    /* Load in texture 1 */
-	    /* Typical Texture Generation Using Data From The Bitmap */
-	    glBindTexture( GL_TEXTURE_2D, texture[0] );
-
-	    /* Generate The Texture */
-	    glTexImage2D( GL_TEXTURE_2D, 0, 3, TextureImage[0]->w,
-			  TextureImage[0]->h, 0, GL_BGR,
-			  GL_UNSIGNED_BYTE, TextureImage[0]->pixels );
-	    
-	    /* Nearest Filtering */
-	    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-			     GL_NEAREST );
-	    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-			     GL_NEAREST );
-
-	    /* Load in texture 2 */
-	    /* Typical Texture Generation Using Data From The Bitmap */
-	    glBindTexture( GL_TEXTURE_2D, texture[1] );
-
-	    /* Linear Filtering */
-	    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-			     GL_LINEAR );
-	    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-			     GL_LINEAR );
-
-	    /* Generate The Texture */
-	    glTexImage2D( GL_TEXTURE_2D, 0, 3, TextureImage[0]->w,
-			  TextureImage[0]->h, 0, GL_BGR,
-			  GL_UNSIGNED_BYTE, TextureImage[0]->pixels );
-
-	    /* Load in texture 3 */
-	    /* Typical Texture Generation Using Data From The Bitmap */
-	    glBindTexture( GL_TEXTURE_2D, texture[2] );
-
-	    /* Mipmapped Filtering */
-	    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-			     GL_LINEAR_MIPMAP_NEAREST );
-	    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-			     GL_LINEAR );
-
-	    /* Generate The MipMapped Texture ( NEW ) */
-	    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, TextureImage[0]->w,
-			       TextureImage[0]->h, GL_BGR,
-			       GL_UNSIGNED_BYTE, TextureImage[0]->pixels );
-        }
-
-    /* Free up any memory we may have used */
-    if ( TextureImage[0] )
-	    SDL_FreeSurface( TextureImage[0] );
-
-    return Status;
-}
 
 /* function to reset our viewport after a window resize */
 int resizeWindow( int width, int height )
@@ -186,7 +115,6 @@ void handleKeyPress( SDL_keysym *keysym )
 	    /* 'f' key was pressed
 	     * this pages through the different filters
 	     */
-	    filter = ( ++filter ) % 3;
 	    break;
 	case SDLK_l:
 	    /* 'l' key was pressed
@@ -251,9 +179,6 @@ void handleKeyPress( SDL_keysym *keysym )
 int initGL( void )
 {
 
-    /* Load in the texture */
-    if ( !LoadGLTextures( ) )
-	return false;
 
     /* Enable Texture Mapping ( NEW ) */
     glEnable( GL_TEXTURE_2D );
@@ -317,9 +242,6 @@ int drawGLScene( void )
 
     glRotatef( xrot, 1.0f, 0.0f, 0.0f); /* Rotate On The X Axis By xrot */
     glRotatef( yrot, 0.0f, 1.0f, 0.0f); /* Rotate On The Y Axis By yrot */
-
-    /* Select A Texture Based On filter */
-    glBindTexture( GL_TEXTURE_2D, texture[filter] );
 
 	
 	scene->Draw();

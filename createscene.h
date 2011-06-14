@@ -22,7 +22,7 @@
 #define CREATESCENE_H
 
 #include "object.h"
-#include "ropepiece.h"
+#include "cylinder.h"
 
 Object* createScene(GLUquadricObj *quadratic);
 
