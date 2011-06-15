@@ -44,7 +44,7 @@ GLfloat xrot;      /* X Rotation */
 GLfloat yrot;      /* Y Rotation */
 GLfloat xspeed;    /* X Rotation Speed */
 GLfloat yspeed;    /* Y Rotation Speed */
-GLfloat z = -1.0f; /* Depth Into The Screen */
+GLfloat z = -2.0f; /* Depth Into The Screen */
 
 GLUquadricObj *quadratic;	// 
 

@@ -38,11 +38,17 @@ Object::~Object()
 }
 
 void Object::Draw(){
-	cout << "--->Starting drawing:"<< name << endl;
+	TRACE("----->glPushMatrix():%s\n",name.c_str());
+	glPushMatrix();
 	this->SetMatrix();
 	this->SetTexture();
 	this->DrawModel();
-	cout << "<---Ending drawing:"<< name << endl;
+	list<Object*>::iterator it;
+	for( it = childs.begin(); it != childs.end(); ++it )    {
+		(*it)->Draw();
+	}
+	TRACE("<-----glPopMatrix():%s\n",name.c_str());
+	glPopMatrix();
 }
 
 void Object::add(Object *object){
@@ -54,21 +60,42 @@ void Object::LoadTexture(GLuint *texture){
 }
 
 void Object::SetTexture(){
-	if(*texture)
-		glBindTexture( GL_TEXTURE_2D,*texture);
+	if(*texture){
+		TRACE("glBindTexture(GL_TEXTURE_2D,%d):%s\n",*texture,name.c_str());
+		glBindTexture(GL_TEXTURE_2D,*texture);
+	}
 }
 
 void Object::SetMatrix(){
-	cout << "Translating model:"<< name << endl;
+	TRACE("glTranslatef(%0.2f,%0.2f,%0.2f):%s\n",translate_x,translate_y,translate_z,name.c_str());
 	glTranslatef(translate_x,translate_y,translate_z);
-	cout << "Rotating model:"<< name << endl;
+	TRACE("glRotatef(%0.2f,%0.2f,%0.2f,%0.2f):%s\n",rotate_a,rotate_x,rotate_y,rotate_z,name.c_str());
 	glRotatef(rotate_a,rotate_x,rotate_y,rotate_z);
-	cout << "Scaling model:"<< name << endl;
+	TRACE("glScalef(%0.2f,%0.2f,%0.2f):%s\n",scale_x,scale_y,scale_z,name.c_str());
 	glScalef(scale_x,scale_y,scale_z);
 }
 
 void Object::DrawModel(){
-	cout << "Drawing model:"<< name << endl;
+	TRACE("Drawing model:%s\n",name.c_str());
+}
+
+void Object::LoadTranslatef(GLfloat translate_x,GLfloat translate_y,GLfloat translate_z){
+	this->translate_x = translate_x;
+	this->translate_y = translate_y;
+	this->translate_z = translate_z;
+}
+
+void Object::LoadRotatef(GLfloat rotate_a,GLfloat rotate_x,GLfloat rotate_y,GLfloat rotate_z){
+	this->rotate_a = rotate_a;
+	this->rotate_x = rotate_x;
+	this->rotate_y = rotate_y;
+	this->rotate_z = rotate_z;
+}
+
+void Object::LoadScalef(GLfloat scale_x,GLfloat scale_y,GLfloat scale_z){
+	this->scale_x = scale_x;
+	this->scale_y = scale_y;
+	this->scale_z = scale_z;
 }
 
 
