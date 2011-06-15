@@ -19,8 +19,10 @@
 
 #include "createscene.h"
 #include <SDL/SDL_image.h>
+#include <cmath>
 
 #define NUM_TEXTURES 10
+
 
 GLuint texture[NUM_TEXTURES]; /* Storage for 3 textures */
 
@@ -66,31 +68,31 @@ Object* createScene(GLUquadricObj *quadratic){
 	
 	/* Load in the texture */
     LoadTexture("data/rope.bmp",0);
+    LoadTexture("data/crate.bmp",1);
+    
+    Object *o;
+	
+    list<Object*> olist;
+    
+    Object *buffer;
+    
+    for(int i=1;i<100;i++){
+		string nome;
+		nome = "pedaco";
+		nome+=(i+'0');
+		buffer= new Cylinder(nome,quadratic,0.025f,0.2f);
+		buffer->LoadTexture(&texture[0]);
+		if (!olist.empty()){
+			buffer->LoadRotatef(-20*cos(i*(M_PI_2/10)),1,0,0);
+			buffer->LoadTranslatef(0,0,0.2f);
+			olist.back()->add(buffer);
+		}
+		else{
+			o = buffer;
+		}
+		olist.push_back(buffer);
 		
-	Object *o = new Cylinder("objeto1",quadratic);
-	o->LoadTexture(&texture[0]);
-	
-	Object *a = new Cylinder("pedaco2",quadratic);
-	Object *b = new Cylinder("pedaco3",quadratic);
-	Object *c = new Cylinder("pedaco4",quadratic);
-	
-	a->LoadTexture(&texture[0]);
-	b->LoadTexture(&texture[1]);
-	c->LoadTexture(&texture[1]);
-	
-	o->add(a);
-	o->add(c);
-	
-	a->add(b);
-	
-	c->LoadTranslatef(0,0,0.5f);
-	
-	a->LoadTranslatef(0,0,0.5f);
-	a->LoadRotatef(30,0,1,0);
-	
-	b->LoadTranslatef(0,0,0.5f);
-	
-	o->LoadRotatef(30,0,1,0);
+	}
 	
 	return o;
 }

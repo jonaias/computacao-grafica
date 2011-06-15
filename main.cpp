@@ -44,7 +44,7 @@ GLfloat xrot;      /* X Rotation */
 GLfloat yrot;      /* Y Rotation */
 GLfloat xspeed;    /* X Rotation Speed */
 GLfloat yspeed;    /* Y Rotation Speed */
-GLfloat z = -2.0f; /* Depth Into The Screen */
+GLfloat z = -5.0f; /* Depth Into The Screen */
 
 GLUquadricObj *quadratic;	// 
 
@@ -54,8 +54,6 @@ GLfloat LightAmbient[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
 GLfloat LightDiffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
 /* Light Position ( NEW ) */
 GLfloat LightPosition[] = { 0.0f, 0.0f, 2.0f, 1.0f };
-
-GLuint filter;     /* Which Filter To Use */
 
 Object *scene;
 
@@ -238,11 +236,10 @@ int drawGLScene( void )
     glLoadIdentity( );
 
     /* Translate Into/Out Of The Screen By z */
-    glTranslatef( 0.0f, 0.0f, z );
+    glTranslatef( -2.5f, 0.0f, z );
 
-    glRotatef( xrot, 1.0f, 0.0f, 0.0f); /* Rotate On The X Axis By xrot */
+    glRotatef( xrot, 0.0f, 0.0f, 1.0f); /* Rotate On The X Axis By xrot */
     glRotatef( yrot, 0.0f, 1.0f, 0.0f); /* Rotate On The Y Axis By yrot */
-
 	
 	scene->Draw();
 	

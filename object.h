@@ -27,7 +27,8 @@
 #include <GL/glu.h>
 #include <GL/gl.h>
 
-//#define NDEBUG
+//Uncomment to stop debugging
+#define NDEBUG
 
 #ifndef NDEBUG
 #define TRACE printf

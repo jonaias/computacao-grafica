@@ -1,6 +1,6 @@
 #Para escrever comentários ##
 ############################# Makefile ##########################
-CC = g++ -Wall -ansi -lGL -lGLU -lSDL -lSDL_image -g
+CC = g++ -Wall -ansi -lGL -lGLU -lSDL -lSDL_image -g -pg
 
 
 all: ponte_do_mal
