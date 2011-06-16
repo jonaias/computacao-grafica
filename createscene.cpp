@@ -68,34 +68,48 @@ Object* createScene(GLUquadricObj *quadratic){
 	
 	/* Load in the texture */
     LoadTexture("data/rope.bmp",0);
-    LoadTexture("data/crate.bmp",1);
+    LoadTexture("data/old_wood.jpg",1);
     
     Object *o,*plano;
 	
-    list<Object*> olist;
+	o=NULL;
     
-    Object *buffer;
-    
-    for(int i=0;i<50;i++){
-		string nome;
-		nome = "pedaco";
-		nome+=(i+'0');
-		buffer= new Cylinder(nome,quadratic,0.025f,0.2f);
-		buffer->LoadTexture(&texture[0]);
-		if (!olist.empty()){
-			buffer->LoadRotatef(0,1,0,0);
-			buffer->LoadTranslatef(0,0,0.2f);
-			olist.back()->add(buffer);
+    Object *buffer_left,*last_left,*buffer_right,*last_right;
+    int a=0;
+    for(int i=0;i<31;i++){
+		last_left = buffer_left;
+		last_right = buffer_right;
+		buffer_left= new Cylinder("pedaco left",quadratic,0.025f,0.2f);
+		buffer_left->LoadTexture(&texture[0]);
+		buffer_right= new Cylinder("pedaco right",quadratic,0.025f,0.2f);
+		buffer_right->LoadTexture(&texture[0]);
+		if (o!=NULL){
+			buffer_left->LoadRotatef(-2,1,0,0);
+			buffer_left->LoadTranslatef(0,0,0.2f);
+			buffer_right->LoadRotatef(-2,1,0,0);
+			buffer_right->LoadTranslatef(0,0,0.2f);
+			if (!(i%5)){
+				plano = new Plane("degrau",quadratic,1,.2f);
+				plano->LoadTranslatef(0.5,0,0);
+				plano->LoadTexture(&texture[1]);
+				buffer_left->add(plano);
+			}
+			last_right->add(buffer_right);
+			last_left->add(buffer_left);
+			a++;
 		}
 		else{
-			plano = new Plane("plano",quadratic,8,4);
+			plano = new Plane("plano",quadratic,8,2);
 			plano->LoadTexture(&texture[1]);
-			o = buffer;
-			o->add(plano);
+			o = plano;
+			o->add(buffer_left);
+			o->add(buffer_right);
+			buffer_left->LoadRotatef(30,1,0,0);
+			buffer_right->LoadRotatef(30,1,0,0);
+			buffer_right->LoadTranslatef(1,0,0);
 		}
-		olist.push_back(buffer);
-		
+				
 	}
-	
+	printf("o valor de a e %d\n",a);
 	return o;
 }

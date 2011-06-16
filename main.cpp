@@ -241,6 +241,7 @@ int drawGLScene( void )
 	gluLookAt(0+xeye,4+yeye,5,0+xorigin,0,0+zorigin,0,1,0);
 	scene->Draw();
 	
+	
     /* Draw it to the screen */
     SDL_GL_SwapBuffers( );
 

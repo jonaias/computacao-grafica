@@ -27,5 +27,5 @@ Cylinder::Cylinder(string name,GLUquadricObj *quadratic, GLfloat radius, GLfloat
 
 void Cylinder::DrawModel(){
 	TRACE("Drawing cylinder:%s, radius:%f, height:%f\n",name.c_str(),radius,height);
-	gluCylinder(quadratic,radius,radius,height,10,1);
+	gluCylinder(quadratic,radius,radius,height,20,1);
 }

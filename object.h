@@ -28,7 +28,7 @@
 #include <GL/gl.h>
 
 //Comment to start debugging
-//#define NDEBUG
+#define NDEBUG
 
 #ifndef NDEBUG
 #define TRACE printf
@@ -53,6 +53,7 @@ class Object
 		void LoadTranslatef(GLfloat translate_x,GLfloat translate_y,GLfloat translate_z);
 		void LoadRotatef(GLfloat rotate_a,GLfloat rotate_x,GLfloat rotate_y,GLfloat rotate_z);
 		void LoadScalef(GLfloat scale_x,GLfloat scale_y,GLfloat scale_z);
+		string getName(void);
 	
 	protected:
 		list<Object*> childs;

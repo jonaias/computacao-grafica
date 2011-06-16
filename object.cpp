@@ -43,8 +43,9 @@ void Object::Draw(){
 	this->SetMatrix();
 	this->SetTexture();
 	this->DrawModel();
+	printf("Drawing child %s\n", this->getName().c_str());
 	list<Object*>::iterator it;
-	for( it = childs.begin(); it != childs.end(); ++it )    {
+	for( it = childs.begin(); it != childs.end(); ++it ){
 		(*it)->Draw();
 	}
 	TRACE("<-----glPopMatrix():%s\n",name.c_str());
@@ -98,4 +99,6 @@ void Object::LoadScalef(GLfloat scale_x,GLfloat scale_y,GLfloat scale_z){
 	this->scale_z = scale_z;
 }
 
-
+string Object::getName(void){
+	return name;
+}
