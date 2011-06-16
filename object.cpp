@@ -28,7 +28,7 @@ Object::Object(string name, GLUquadricObj *quadratic)
 	rotate_a=0.0f;rotate_x=0.0f;rotate_y=0.0f;rotate_z=0.0f;
 	scale_x=1.0f;scale_y=1.0f;scale_z=1.0f;
 	translate_x=0.0f;translate_y=0.0f;translate_z=0.0f;
-	texture = NULL;
+	texture = (GLuint)0;
 }
 
 
@@ -56,13 +56,13 @@ void Object::add(Object *object){
 }
 
 void Object::LoadTexture(GLuint *texture){
-	this->texture = texture;
+	this->texture = *texture;
 }
 
 void Object::SetTexture(){
-	if(*texture){
-		TRACE("glBindTexture(GL_TEXTURE_2D,%d):%s\n",*texture,name.c_str());
-		glBindTexture(GL_TEXTURE_2D,*texture);
+	if(texture){
+		TRACE("glBindTexture(GL_TEXTURE_2D,%d):%s\n",texture,name.c_str());
+		glBindTexture(GL_TEXTURE_2D,texture);
 	}
 }
 

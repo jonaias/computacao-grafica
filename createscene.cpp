@@ -70,25 +70,28 @@ Object* createScene(GLUquadricObj *quadratic){
     LoadTexture("data/rope.bmp",0);
     LoadTexture("data/crate.bmp",1);
     
-    Object *o;
+    Object *o,*plano;
 	
     list<Object*> olist;
     
     Object *buffer;
     
-    for(int i=1;i<100;i++){
+    for(int i=0;i<50;i++){
 		string nome;
 		nome = "pedaco";
 		nome+=(i+'0');
 		buffer= new Cylinder(nome,quadratic,0.025f,0.2f);
 		buffer->LoadTexture(&texture[0]);
 		if (!olist.empty()){
-			buffer->LoadRotatef(-20*cos(i*(M_PI_2/10)),1,0,0);
+			buffer->LoadRotatef(0,1,0,0);
 			buffer->LoadTranslatef(0,0,0.2f);
 			olist.back()->add(buffer);
 		}
 		else{
+			plano = new Plane("plano",quadratic,8,4);
+			plano->LoadTexture(&texture[1]);
 			o = buffer;
+			o->add(plano);
 		}
 		olist.push_back(buffer);
 		

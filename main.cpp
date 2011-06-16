@@ -40,8 +40,7 @@ SDL_Surface *surface;
 /* Whether or not lighting is on */
 int light = false;
 
-GLfloat xrot;      /* X Rotation */
-GLfloat yrot;      /* Y Rotation */
+GLfloat xeye=0,yeye=0,xorigin=0,zorigin=0;      /* X Rotation */
 GLfloat xspeed;    /* X Rotation Speed */
 GLfloat yspeed;    /* Y Rotation Speed */
 GLfloat z = -5.0f; /* Depth Into The Screen */
@@ -236,11 +235,10 @@ int drawGLScene( void )
     glLoadIdentity( );
 
     /* Translate Into/Out Of The Screen By z */
-    glTranslatef( -2.5f, 0.0f, z );
+    //glTranslatef( 0.0f, 0.0f, -5 );
 
-    glRotatef( xrot, 0.0f, 0.0f, 1.0f); /* Rotate On The X Axis By xrot */
-    glRotatef( yrot, 0.0f, 1.0f, 0.0f); /* Rotate On The Y Axis By yrot */
-	
+
+	gluLookAt(0+xeye,4+yeye,5,0+xorigin,0,0+zorigin,0,1,0);
 	scene->Draw();
 	
     /* Draw it to the screen */
@@ -258,9 +256,6 @@ int drawGLScene( void )
 	    Frames = 0;
 	}
     }
-
-    xrot += xspeed; /* Add xspeed To xrot */
-    yrot += yspeed; /* Add yspeed To yrot */
 
     return(true);
 }
@@ -372,6 +367,20 @@ int main(int argc, char **argv)
 			    /* handle quit requests */
 			    done = 1;
 			    break;
+			case SDL_MOUSEMOTION:
+					/*botao esquerdo do mouse*/
+					if(event.motion.state==1){
+						yeye+=event.motion.yrel;
+						xeye+=event.motion.xrel;
+						TRACE("Moving camera position x+=%d y+=%d\n",event.motion.xrel,event.motion.yrel);
+					}
+					/*botao do meio do mouse*/
+					else if(event.motion.state==2){
+						zorigin+=event.motion.yrel;
+						xorigin+=event.motion.xrel;
+						TRACE("Moving camera origin x+=%d z+=%d\n",event.motion.xrel,event.motion.yrel);
+					}
+				break;
 			default:
 			    break;
 			}

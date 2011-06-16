@@ -1,4 +1,4 @@
-//      object.h
+//      ropepiece.h
 //      
 //      Copyright 2011 jonas <jonaias@jonaias-MX6453>
 //      
@@ -18,13 +18,20 @@
 //      MA 02110-1301, USA.
 
 
-#ifndef CREATESCENE_H
-#define CREATESCENE_H
+#ifndef PLANE_H
+#define PLANE_H
 
 #include "object.h"
-#include "cylinder.h"
-#include "plane.h"
 
-Object* createScene(GLUquadricObj *quadratic);
+class Plane: public Object
+{
+	public:
+			Plane(string name,GLUquadricObj *quadratic,GLfloat length, GLfloat width);
+			void DrawModel();
+	private:
+			GLfloat length;
+			GLfloat width;
+		/* add your private declarations */
+};
 
-#endif /* CREATESCENE_H */ 
+#endif /* PLANE_H */ 

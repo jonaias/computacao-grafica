@@ -27,8 +27,8 @@
 #include <GL/glu.h>
 #include <GL/gl.h>
 
-//Uncomment to stop debugging
-#define NDEBUG
+//Comment to start debugging
+//#define NDEBUG
 
 #ifndef NDEBUG
 #define TRACE printf
@@ -58,7 +58,7 @@ class Object
 		list<Object*> childs;
 		string name;
 		GLUquadricObj *quadratic;
-		GLuint *texture;
+		GLuint texture;
 		GLfloat rotate_a,rotate_x,rotate_y,rotate_z;
 		GLfloat scale_x,scale_y,scale_z;
 		GLfloat translate_x,translate_y,translate_z;
