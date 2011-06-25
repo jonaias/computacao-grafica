@@ -20,6 +20,8 @@
 #include "createscene.h"
 #include <SDL/SDL_image.h>
 #include <cmath>
+#include <iostream>
+#include <sstream>
 
 #define NUM_TEXTURES 10
 
@@ -68,48 +70,54 @@ Object* createScene(GLUquadricObj *quadratic){
 	
 	/* Load in the texture */
     LoadTexture("data/rope.bmp",0);
-    LoadTexture("data/old_wood.jpg",1);
+    LoadTexture("data/old_wood.bmp",1);
+    LoadTexture("data/grass1.jpg",2);
     
     Object *o,*plano;
 	
 	o=NULL;
     
     Object *buffer_left,*last_left,*buffer_right,*last_right;
-    int a=0;
-    for(int i=0;i<31;i++){
+    for(int i=0;i<30;i++){
+		ostringstream stm;
+		stm << i;
+		cout <<"Pedaco numero: "<< stm.str() << endl; 
 		last_left = buffer_left;
 		last_right = buffer_right;
-		buffer_left= new Cylinder("pedaco left",quadratic,0.025f,0.2f);
+		buffer_left= new Cylinder("pedaco left"+stm.str(),quadratic,0.025f,0.2f);
 		buffer_left->LoadTexture(&texture[0]);
-		buffer_right= new Cylinder("pedaco right",quadratic,0.025f,0.2f);
+		buffer_right= new Cylinder("pedaco right"+stm.str(),quadratic,0.025f,0.2f);
 		buffer_right->LoadTexture(&texture[0]);
 		if (o!=NULL){
-			buffer_left->LoadRotatef(-2,1,0,0);
-			buffer_left->LoadTranslatef(0,0,0.2f);
-			buffer_right->LoadRotatef(-2,1,0,0);
-			buffer_right->LoadTranslatef(0,0,0.2f);
+			buffer_left->LoadRotatef(-2.0f,1.0f,0.0f,0.0f);
+			buffer_left->LoadTranslatef(0.0f,0.0f,0.2f);
+			buffer_right->LoadRotatef(-2.0f,1.0f,0.0f,0.0f);
+			buffer_right->LoadTranslatef(0.0f,0.0f,0.2f);
 			if (!(i%5)){
 				plano = new Plane("degrau",quadratic,1,.2f);
-				plano->LoadTranslatef(0.5,0,0);
+				plano->LoadTranslatef(0.5f,0.0f,0.0f);
 				plano->LoadTexture(&texture[1]);
 				buffer_left->add(plano);
 			}
 			last_right->add(buffer_right);
 			last_left->add(buffer_left);
-			a++;
 		}
 		else{
-			plano = new Plane("plano",quadratic,8,2);
-			plano->LoadTexture(&texture[1]);
+			plano = new Plane("plano",quadratic,100,50);
+			buffer_left->LoadTranslatef(100.0f,0.0f,0.0f);
+			plano->LoadTexture(&texture[2]);
 			o = plano;
-			o->add(buffer_left);
 			o->add(buffer_right);
-			buffer_left->LoadRotatef(30,1,0,0);
-			buffer_right->LoadRotatef(30,1,0,0);
-			buffer_right->LoadTranslatef(1,0,0);
+			o->add(buffer_left);
+			buffer_left->LoadRotatef(30.0f,1.0f,0.0f,0.0f);
+			buffer_left->LoadTranslatef(0.0f,0.0f,25.0f);
+			buffer_right->LoadRotatef(30.0f,1.0f,0.0f,0.0f);
+			buffer_right->LoadTranslatef(1.0f,0.0f,25.0f);
 		}
-				
+		plano = new Plane("plano",quadratic,100,50);
+		plano->LoadTexture(&texture[2]);
+		plano->LoadTranslatef(1.0f,0.0f,55.5f);
+		o->add(plano);
 	}
-	printf("o valor de a e %d\n",a);
 	return o;
 }

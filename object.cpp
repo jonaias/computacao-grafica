@@ -43,7 +43,9 @@ void Object::Draw(){
 	this->SetMatrix();
 	this->SetTexture();
 	this->DrawModel();
-	printf("Drawing child %s\n", this->getName().c_str());
+	
+	//printModelView();
+	
 	list<Object*>::iterator it;
 	for( it = childs.begin(); it != childs.end(); ++it ){
 		(*it)->Draw();
@@ -101,4 +103,25 @@ void Object::LoadScalef(GLfloat scale_x,GLfloat scale_y,GLfloat scale_z){
 
 string Object::getName(void){
 	return name;
+}
+
+void Object::printModelView(void){
+	GLdouble matrix[16];
+	TRACE("ERROR:%d\n",glGetError());
+	glGetDoublev(GL_MODELVIEW_MATRIX,matrix);
+	printf("Drawing child %s with MODELVIEW\n", this->getName().c_str());
+	for (int i=0; i<4; i++) {
+		for (int j=0; j<4; j++) {
+		printf("%0.3f\t",matrix[j*4+i]);
+	}
+    printf("\n");
+	}
+}
+
+void Object::printCallGraph(void){
+	list<Object*>::iterator it;
+	printf("%s -- ",this->name.c_str());
+	for( it = childs.begin(); it != childs.end(); ++it ){
+		(*it)->printCallGraph();
+	}
 }

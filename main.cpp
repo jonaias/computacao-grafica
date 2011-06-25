@@ -43,7 +43,6 @@ int light = false;
 GLfloat xeye=0,yeye=0,xorigin=0,zorigin=0;      /* X Rotation */
 GLfloat xspeed;    /* X Rotation Speed */
 GLfloat yspeed;    /* Y Rotation Speed */
-GLfloat z = -5.0f; /* Depth Into The Screen */
 
 GLUquadricObj *quadratic;	// 
 
@@ -127,13 +126,13 @@ void handleKeyPress( SDL_keysym *keysym )
 	    /* PageUp key was pressed
 	     * this zooms into the scene
 	     */
-	    z -= 0.02f;
+	    
 	    break;
 	case SDLK_PAGEDOWN:
 	    /* PageDown key was pressed
 	     * this zooms out of the scene
 	     */
-	    z += 0.02f;
+	     
 	    break;
 	case SDLK_UP:
 	    /* Up arrow key was pressed
@@ -238,12 +237,15 @@ int drawGLScene( void )
     //glTranslatef( 0.0f, 0.0f, -5 );
 
 
-	gluLookAt(0+xeye,4+yeye,5,0+xorigin,0,0+zorigin,0,1,0);
+	gluLookAt(2+xeye,3+yeye,33,0+xorigin,0,26+zorigin,0,1,0);
+	
 	scene->Draw();
 	
 	
     /* Draw it to the screen */
     SDL_GL_SwapBuffers( );
+    
+    //exit(-1);
 
     /* Gather our frames per second */
     Frames++;
@@ -325,6 +327,10 @@ int main(int argc, char **argv)
 
     /* initialize OpenGL */
     initGL( );
+    
+    int max_depth;
+    glGetIntegerv(GL_MAX_MODELVIEW_STACK_DEPTH,&max_depth);
+    printf("Model view depth stack = %d",max_depth);
 
     /* resize the initial window */
     resizeWindow( SCREEN_WIDTH, SCREEN_HEIGHT );
