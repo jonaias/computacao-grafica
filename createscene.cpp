@@ -84,6 +84,8 @@ Object* createScene(GLUquadricObj *quadratic){
 	
 	o=NULL;
     
+    Model *model;
+    
     Object *buffer_left,*last_left,*buffer_right,*last_right;
     for(int i=0;i<30;i++){
 		ostringstream stm;
@@ -130,7 +132,12 @@ Object* createScene(GLUquadricObj *quadratic){
 		skybox->LoadTexture(&texture[3]);
 		skybox->LoadTranslatef(0,20.0f,20);
 		
-		o->add(skybox);
+		//o->add(skybox);
+		
+		model = new Model("modelo",quadratic,40.0f);
+		model->LoadModel("data/sweetgum.obj");
+		model->LoadTexture(&texture[1]);
+		o->add(model);
 	}
 	return o;
 }

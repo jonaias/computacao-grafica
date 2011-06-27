@@ -1,4 +1,4 @@
-//      object.h
+//      model.cpp
 //      
 //      Copyright 2011 jonas <jonaias@jonaias-MX6453>
 //      
@@ -18,16 +18,22 @@
 //      MA 02110-1301, USA.
 
 
-#ifndef CREATESCENE_H
-#define CREATESCENE_H
-
-#include "object.h"
-#include "cylinder.h"
-#include "plane.h"
-#include "cube.h"
-#include "heightmap.h"
 #include "model.h"
 
-Object* createScene(GLUquadricObj *quadratic);
+Model::Model(string name,GLUquadricObj *quadratic, GLfloat size):Object(name,quadratic){
+	this->LoadScalef(size,size,size);
+	model = new GLMmodel();
+}
 
-#endif /* CREATESCENE_H */ 
+void Model::DrawModel(){
+	TRACE("Drawing model:%s, size:%f\n",name.c_str(),size);  
+	glmDraw(model, GLM_SMOOTH);                                
+}
+
+
+void Model::LoadModel(string path){
+	 model = glmReadOBJ(path.c_str());
+	 glmFacetNormals(model);
+	 glmVertexNormals(model, 90.0f, false);
+	 glmUnitize(model);
+}
