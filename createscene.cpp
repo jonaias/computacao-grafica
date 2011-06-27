@@ -73,7 +73,14 @@ Object* createScene(GLUquadricObj *quadratic){
     LoadTexture("data/old_wood.bmp",1);
     LoadTexture("data/grass1.jpg",2);
     
-    Object *o,*plano;
+    LoadTexture("data/rays_up.bmp",3);
+    LoadTexture("data/rays_down.bmp",4);
+    LoadTexture("data/rays_east.bmp",5);
+    LoadTexture("data/rays_west.bmp",6);
+    LoadTexture("data/rays_north.bmp",7);
+    LoadTexture("data/rays_south.bmp",8);
+    
+    Object *o,*plano, *skybox;
 	
 	o=NULL;
     
@@ -105,7 +112,7 @@ Object* createScene(GLUquadricObj *quadratic){
 		else{
 			plano = new Plane("plano",quadratic,100,50);
 			buffer_left->LoadTranslatef(100.0f,0.0f,0.0f);
-			plano->LoadTexture(&texture[2]);
+			plano->LoadTexture(&texture[4]);
 			o = plano;
 			o->add(buffer_right);
 			o->add(buffer_left);
@@ -115,9 +122,15 @@ Object* createScene(GLUquadricObj *quadratic){
 			buffer_right->LoadTranslatef(1.0f,0.0f,25.0f);
 		}
 		plano = new Plane("plano",quadratic,100,50);
-		plano->LoadTexture(&texture[2]);
+		plano->LoadTexture(&texture[4]);
 		plano->LoadTranslatef(1.0f,0.0f,55.5f);
 		o->add(plano);
+		
+		skybox = new Cube("sky",quadratic,50.0f);
+		skybox->LoadTexture(&texture[3]);
+		skybox->LoadTranslatef(0,20.0f,20);
+		
+		o->add(skybox);
 	}
 	return o;
 }

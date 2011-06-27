@@ -24,6 +24,7 @@
 #include "object.h"
 #include "cylinder.h"
 #include "plane.h"
+#include "cube.h"
 
 Object* createScene(GLUquadricObj *quadratic);
 

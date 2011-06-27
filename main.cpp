@@ -87,7 +87,7 @@ int resizeWindow( int width, int height )
     glLoadIdentity( );
 
     /* Set our perspective */
-    gluPerspective( 45.0f, ratio, 0.1f, 100.0f );
+    gluPerspective( 45.0f, ratio, 0.1f, 1000.0f );
 
     /* Make sure we're chaning the model view and not the projection */
     glMatrixMode( GL_MODELVIEW );
@@ -171,6 +171,20 @@ void handleKeyPress( SDL_keysym *keysym )
     return;
 }
 
+GLuint	fogMode[]= { GL_EXP, GL_EXP2, GL_LINEAR };	// Storage For Three Types Of Fog
+GLuint	fogfilter = 0;								// Which Fog Mode To Use 
+GLfloat	fogColor[4] = {0.5f,0.5f,0.5f,1.0f};		// Fog Color
+
+void initFog(void){
+	glFogi(GL_FOG_MODE, fogMode[0]);			// Fog Mode
+	glFogfv(GL_FOG_COLOR, fogColor);					// Set Fog Color
+	glFogf(GL_FOG_DENSITY, 0.03f);						// How Dense Will The Fog Be
+	glHint(GL_FOG_HINT, GL_DONT_CARE);					// Fog Hint Value
+	glFogf(GL_FOG_START, 1.0f);							// Fog Start Depth
+	glFogf(GL_FOG_END, 5.0f);							// Fog End Depth
+	glEnable(GL_FOG);									// Enables GL_FOG
+}
+
 /* general OpenGL initialization function */
 int initGL( void )
 {
@@ -208,6 +222,8 @@ int initGL( void )
 
     /* Enable Light One */
     glEnable( GL_LIGHT1 );
+    
+    initFog();
     
     quadratic = gluNewQuadric();
     
