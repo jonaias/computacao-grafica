@@ -1,4 +1,4 @@
-//      object.h
+//      ropepiece.h
 //      
 //      Copyright 2011 jonas <jonaias@jonaias-MX6453>
 //      
@@ -18,17 +18,19 @@
 //      MA 02110-1301, USA.
 
 
-#ifndef CREATESCENE_H
-#define CREATESCENE_H
+#ifndef SKYBOX_H
+#define SKYBOX_H
 
 #include "object.h"
-#include "cylinder.h"
-#include "plane.h"
-#include "cube.h"
-#include "heightmap.h"
-#include "model.h"
-#include "skybox.h"
 
-Object* createScene(GLUquadricObj *quadratic);
+class Skybox: public Object
+{
+	public:
+			Skybox(string name,GLUquadricObj *quadratic,GLfloat size);
+			void DrawModel();
+	private:
+			GLfloat size;
+		/* add your private declarations */
+};
 
-#endif /* CREATESCENE_H */ 
+#endif /* SKYBOX_H */ 

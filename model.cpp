@@ -27,13 +27,14 @@ Model::Model(string name,GLUquadricObj *quadratic, GLfloat size):Object(name,qua
 
 void Model::DrawModel(){
 	TRACE("Drawing model:%s, size:%f\n",name.c_str(),size);  
-	glmDraw(model, GLM_SMOOTH);                                
+	glmDraw(model, GLM_NONE);                               
 }
 
 
 void Model::LoadModel(string path){
 	 model = glmReadOBJ(path.c_str());
-	 glmFacetNormals(model);
-	 glmVertexNormals(model, 90.0f, false);
 	 glmUnitize(model);
+	 //glmFacetNormals(model);
+	 //glmVertexNormals(model, 180.0f, true);
+	 
 }

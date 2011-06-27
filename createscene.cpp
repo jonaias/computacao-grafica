@@ -71,7 +71,7 @@ Object* createScene(GLUquadricObj *quadratic){
 	/* Load in the texture */
     LoadTexture("data/rope.bmp",0);
     LoadTexture("data/old_wood.bmp",1);
-    LoadTexture("data/grass1.jpg",2);
+    LoadTexture("data/crate.bmp",2);
     
     LoadTexture("data/rays_up.bmp",3);
     LoadTexture("data/rays_down.bmp",4);
@@ -80,7 +80,7 @@ Object* createScene(GLUquadricObj *quadratic){
     LoadTexture("data/rays_north.bmp",7);
     LoadTexture("data/rays_south.bmp",8);
     
-    Object *o,*plano, *skybox;
+    Object *o,*plano, *skybox, *box1,*box2,*box3;
 	
 	o=NULL;
     
@@ -90,7 +90,6 @@ Object* createScene(GLUquadricObj *quadratic){
     for(int i=0;i<30;i++){
 		ostringstream stm;
 		stm << i;
-		cout <<"Pedaco numero: "<< stm.str() << endl; 
 		last_left = buffer_left;
 		last_right = buffer_right;
 		buffer_left= new Cylinder("pedaco left"+stm.str(),quadratic,0.025f,0.2f);
@@ -128,16 +127,34 @@ Object* createScene(GLUquadricObj *quadratic){
 		plano->LoadTranslatef(1.0f,0.0f,55.5f);
 		o->add(plano);
 		
-		skybox = new Cube("sky",quadratic,50.0f);
+		skybox = new Skybox("skybox",quadratic,100.0f);
 		skybox->LoadTexture(&texture[3]);
-		skybox->LoadTranslatef(0,20.0f,20);
+		skybox->LoadTranslatef(0,10.0f,20);	
+		o->add(skybox);
 		
-		//o->add(skybox);
-		
-		model = new Model("modelo",quadratic,40.0f);
-		model->LoadModel("data/sweetgum.obj");
-		model->LoadTexture(&texture[1]);
+		model = new Model("arvore",quadratic,2.0f);
+		model->LoadTranslatef(-0.3,2,23);
+		model->LoadTexture(&texture[0]);
+		model->LoadModel("data/tree1.obj");
 		o->add(model);
+		
+		box1 = new Cube("box1",quadratic,0.25f);
+		box1->LoadTexture(&texture[2]);
+		box1->LoadTranslatef(1.5,0.25f,23);
+		box1->LoadRotatef(30,0,-1,0);
+		o->add(box1);
+		
+		box2 = new Cube("box2",quadratic,1);
+		box2->LoadTexture(&texture[2]);
+		box2->LoadTranslatef(1,2,0);
+		box1->add(box2);
+		
+		box3 = new Cube("box3",quadratic,1);
+		box3->LoadTexture(&texture[2]);
+		box3->LoadTranslatef(2,0,0);
+		box3->LoadRotatef(30,0,1,0);
+		box1->add(box3);
+		
 	}
 	return o;
 }

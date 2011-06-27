@@ -6,8 +6,8 @@ CC = g++ -Wall -ansi -lGL -lGLU -lSDL -lSDL_image -g -pg
 all: ponte_do_mal
 
 
-ponte_do_mal: main.o object.o createscene.o cylinder.o plane.o cube.o heightmap.o glm.o glm_util.o glmimg.o model.o
-	$(CC) -o ./bin/ponte_do_mal ./build/object.o ./build/createscene.o ./build/cylinder.o ./build/plane.o ./build/glm_util.o ./build/model.o ./build/glmimg.o ./build/cube.o ./build/heightmap.o ./build/glm.o  ./build/main.o 
+ponte_do_mal: main.o object.o createscene.o cylinder.o plane.o cube.o heightmap.o glm.o glm_util.o glmimg.o model.o skybox.o
+	$(CC) -o ./bin/ponte_do_mal ./build/object.o ./build/createscene.o ./build/cylinder.o ./build/plane.o ./build/glm_util.o ./build/skybox.o ./build/model.o ./build/glmimg.o ./build/cube.o ./build/heightmap.o ./build/glm.o  ./build/main.o 
 main.o: main.cpp
 	$(CC) -o ./build/main.o -c main.cpp
 object.o: object.cpp object.h
@@ -30,6 +30,8 @@ glm_util.o: glm_util.c
 	$(CC) -o ./build/glm_util.o -c glm_util.c
 glmimg.o: glmimg.c
 	$(CC) -o ./build/glmimg.o -c glmimg.c
+skybox.o: skybox.cpp skybox.h
+	$(CC) -o ./build/skybox.o -c skybox.cpp
 	
 	
 clean:
