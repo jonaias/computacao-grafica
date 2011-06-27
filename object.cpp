@@ -118,10 +118,19 @@ void Object::printModelView(void){
 	}
 }
 
-void Object::printCallGraph(void){
+void Object::printCallGraph(string top){
 	list<Object*>::iterator it;
-	printf("%s -- ",this->name.c_str());
-	for( it = childs.begin(); it != childs.end(); ++it ){
-		(*it)->printCallGraph();
+	for( it = childs.begin(); it != childs.end(); it++ ){
+		cout << top << " -- " << (*it)->name << endl;
+		(*it)->printCallGraph((*it)->name);
 	}
+}
+
+void Object::printChilds(void){
+	cout<< "Start Object  " << this->name << " childs: "<< endl;
+	list<Object*>::iterator it;
+	for( it = childs.begin(); it != childs.end(); it++ ){
+		cout << (*it)->name << endl;
+	}
+	cout<< "End Object  " << this->name << " childs "<< endl;
 }

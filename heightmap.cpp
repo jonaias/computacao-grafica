@@ -25,7 +25,7 @@ Heightmap::Heightmap(string name,GLUquadricObj *quadratic, GLfloat size):Object(
 }
 
 void Heightmap::DrawModel(){
-	TRACE("Drawing cylinder:%s, length:%f, width:%f\n",name.c_str(),length,width);
+	TRACE("Drawing cylinder:%s, size:%f\n",name.c_str(),size);
 	// djoubert187 _at_ hotmail.com
 
 

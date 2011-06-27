@@ -53,7 +53,8 @@ class Object
 		void LoadRotatef(GLfloat rotate_a,GLfloat rotate_x,GLfloat rotate_y,GLfloat rotate_z);
 		void LoadScalef(GLfloat scale_x,GLfloat scale_y,GLfloat scale_z);
 		void printModelView(void);
-		void printCallGraph(void);
+		void printCallGraph(string top);
+		void printChilds(void);
 		string getName(void);
 	
 	protected:

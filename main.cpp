@@ -47,7 +47,7 @@ GLfloat yspeed;    /* Y Rotation Speed */
 GLUquadricObj *quadratic;	// 
 
 /* Ambient Light Values ( NEW ) */
-GLfloat LightAmbient[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
+GLfloat LightAmbient[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
 /* Diffuse Light Values ( NEW ) */
 GLfloat LightDiffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
 /* Light Position ( NEW ) */
@@ -232,6 +232,8 @@ int initGL( void )
     gluQuadricTexture(quadratic, GL_TRUE);      // Create Texture Coords ( NEW )
 
 	scene = createScene(quadratic);
+	
+	scene->printCallGraph(scene->getName());
 
     return( true );
 }
@@ -346,7 +348,7 @@ int main(int argc, char **argv)
     
     int max_depth;
     glGetIntegerv(GL_MAX_MODELVIEW_STACK_DEPTH,&max_depth);
-    printf("Model view depth stack = %d",max_depth);
+    TRACE("Model view depth stack = %d\n",max_depth);
 
     /* resize the initial window */
     resizeWindow( SCREEN_WIDTH, SCREEN_HEIGHT );
