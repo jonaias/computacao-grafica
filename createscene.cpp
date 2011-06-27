@@ -138,20 +138,21 @@ Object* createScene(GLUquadricObj *quadratic){
 		model->LoadModel("data/tree1.obj");
 		o->add(model);
 		
-		box1 = new Cube("box1",quadratic,0.25f);
+		box1 = new Cube("box1",quadratic,1);
 		box1->LoadTexture(&texture[2]);
-		box1->LoadTranslatef(1.5,0.25f,23);
+		box1->LoadTranslatef(1.5,0.5f,23);
 		box1->LoadRotatef(30,0,-1,0);
+		//box1->LoadScalef(2,2,2);
 		o->add(box1);
 		
 		box2 = new Cube("box2",quadratic,1);
 		box2->LoadTexture(&texture[2]);
-		box2->LoadTranslatef(1,2,0);
+		box2->LoadTranslatef(0.5,1,0);
 		box1->add(box2);
 		
 		box3 = new Cube("box3",quadratic,1);
 		box3->LoadTexture(&texture[2]);
-		box3->LoadTranslatef(2,0,0);
+		box3->LoadTranslatef(1,0,0);
 		box3->LoadRotatef(30,0,1,0);
 		box1->add(box3);
 		
