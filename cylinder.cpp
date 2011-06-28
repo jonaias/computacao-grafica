@@ -19,6 +19,7 @@
 
 
 #include "cylinder.h"
+#include <cmath>
 
 Cylinder::Cylinder(string name,GLUquadricObj *quadratic, GLfloat radius, GLfloat height):Object(name,quadratic){
 	this->radius = radius;
@@ -26,6 +27,20 @@ Cylinder::Cylinder(string name,GLUquadricObj *quadratic, GLfloat radius, GLfloat
 }
 
 void Cylinder::DrawModel(){
+	static float a=0.0f;
 	TRACE("Drawing cylinder:%s, radius:%f, height:%f\n",name.c_str(),radius,height);
 	gluCylinder(quadratic,radius,radius,height,20,1);
+	if (!name.substr(0,14).compare("ropepiece_left") && animate_flag){
+		//rotate_z = 0.5;
+		int piece=atoi(this->name.substr(14,2).c_str());
+		if (piece==0) a+=M_PI/600.0f;
+		if (piece < 15 ){
+			rotate_a= sin(a)*piece;
+		}
+		else{
+			piece-=15;
+			rotate_a= cos(a)*piece;
+		}
+	}
+	
 }

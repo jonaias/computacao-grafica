@@ -23,6 +23,8 @@
 
 #include "object.h"
 
+extern int animate_flag;
+
 class Cylinder: public Object
 {
 	public:

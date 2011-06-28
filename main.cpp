@@ -47,13 +47,15 @@ GLfloat yspeed;    /* Y Rotation Speed */
 GLUquadricObj *quadratic;	// 
 
 /* Ambient Light Values ( NEW ) */
-GLfloat LightAmbient[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat LightAmbient[]  = { 1.0f, 0.2f, 0.2f, 1.0f };
 /* Diffuse Light Values ( NEW ) */
-GLfloat LightDiffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat LightDiffuse[]  = { 1.0f, 0.2f, 0.2f, 1.0f };
 /* Light Position ( NEW ) */
 GLfloat LightPosition[] = { 0.0f, 0.0f, 2.0f, 1.0f };
 
 Object *scene;
+
+int animate_flag=1;
 
 
 /* function to release/destroy our resources and restoring the old desktop */
@@ -111,6 +113,12 @@ void handleKeyPress( SDL_keysym *keysym )
 	    /* 'f' key was pressed
 	     * this pages through the different filters
 	     */
+	    break;
+	case SDLK_s:
+	    /* 's' key was pressed
+	     * this pages through the different filters
+	     */
+	     animate_flag = !animate_flag;
 	    break;
 	case SDLK_l:
 	    /* 'l' key was pressed
@@ -173,12 +181,12 @@ void handleKeyPress( SDL_keysym *keysym )
 
 GLuint	fogMode[]= { GL_EXP, GL_EXP2, GL_LINEAR };	// Storage For Three Types Of Fog
 GLuint	fogfilter = 0;								// Which Fog Mode To Use 
-GLfloat	fogColor[4] = {0.5f,0.5f,0.5f,1.0f};		// Fog Color
+GLfloat	fogColor[4] = {0.7f,0.5f,0.5f,1.0f};		// Fog Color
 
 void initFog(void){
 	glFogi(GL_FOG_MODE, fogMode[0]);			// Fog Mode
 	glFogfv(GL_FOG_COLOR, fogColor);					// Set Fog Color
-	glFogf(GL_FOG_DENSITY, 0.03f);						// How Dense Will The Fog Be
+	glFogf(GL_FOG_DENSITY, 0.04f);						// How Dense Will The Fog Be
 	glHint(GL_FOG_HINT, GL_DONT_CARE);					// Fog Hint Value
 	glFogf(GL_FOG_START, 1.0f);							// Fog Start Depth
 	glFogf(GL_FOG_END, 5.0f);							// Fog End Depth
@@ -255,7 +263,7 @@ int drawGLScene( void )
     //glTranslatef( 0.0f, 0.0f, -5 );
 
 
-	gluLookAt(2+xeye,3+yeye,33,0+xorigin,0,26+zorigin,0,1,0);
+	gluLookAt(-25+xeye,3,33,0+xorigin,0,26+zorigin,0,1,0);
 	
 	scene->Draw();
 	

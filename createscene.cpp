@@ -84,7 +84,7 @@ Object* createScene(GLUquadricObj *quadratic){
 	
 	o=NULL;
     
-    Model *model;
+    Model *tree1,*tree2,*tree3,*tree4;
     
     Object *buffer_left,*last_left,*buffer_right;
     for(int i=0;i<30;i++){
@@ -137,46 +137,138 @@ Object* createScene(GLUquadricObj *quadratic){
 	skybox->LoadTranslatef(0,5.0f,37.5);	
 	o->add(skybox);
 	
-	model = new Model("tree1",quadratic,2.0f);
-	model->LoadTranslatef(-0.3,2,23);
-	model->LoadTexture(&texture[0]);
-	model->LoadModel("data/tree1.obj");
-	o->add(model);
+	tree1 = new Model("tree1",quadratic,2.0f);
+	tree1->LoadTranslatef(-0.3,2,23);
+	tree1->LoadTexture(&texture[2]);
+	tree1->LoadModel("data/tree1.obj");
+	o->add(tree1);
 	
-	model = new Model("tree2",quadratic,2.0f);
-	model->LoadTranslatef(1,2,20);
-	model->LoadTexture(&texture[0]);
-	model->LoadModel("data/tree1.obj");
-	o->add(model);
+	tree2 = new Model("tree2",quadratic,1.5f);
+	tree2->LoadTranslatef(1,1.5,20);
+	tree2->LoadTexture(&texture[2]);
+	tree2->LoadModel("data/tree2.obj");
+	o->add(tree2);
+	
+	tree3 = new Model("tree3",quadratic,4.0f);
+	tree3->LoadTranslatef(-3.5,4,20);
+	tree3->LoadTexture(&texture[2]);
+	tree3->LoadModel("data/tree3.obj");
+	o->add(tree3);
+	
+	tree4 = new Model("tree4",quadratic,3.0f);
+	tree4->LoadTranslatef(5.5,2,20);
+	tree4->LoadTexture(&texture[2]);
+	tree4->LoadModel("data/tree4.obj");
+	o->add(tree4);
 	
 	
 	float box_scale=0.5f;
-	box1 = new Cube("box1",quadratic,1);
+	box1 = new Cube("box1",quadratic,box_scale);
 	box1->LoadTexture(&texture[2]);
-	box1->LoadTranslatef(1.5,0.5f,23);
-	box1->LoadRotatef(30,0,-1*box_scale,0);
-	box1->LoadScalef(box_scale,box_scale,box_scale);
+	box1->LoadTranslatef(1.5,box_scale,23);
+	box1->LoadRotatef(30,0,-1,0);
 	o->add(box1);
 	
-	box2 = new Cube("box2",quadratic,1);
+	box2 = new Cube("box2",quadratic,box_scale);
 	box2->LoadTexture(&texture[2]);
-	box2->LoadTranslatef(0.5,1,0);
+	box2->LoadTranslatef(box_scale/2,box_scale,0);
 	box1->add(box2);
 	
-	box3 = new Cube("box3",quadratic,1);
+	box3 = new Cube("box3",quadratic,box_scale);
 	box3->LoadTexture(&texture[2]);
-	box3->LoadTranslatef(1,0,0);
+	box3->LoadTranslatef(box_scale,0,0);
 	box3->LoadRotatef(30,0,1,0);
 	box1->add(box3);
 	
-	box4 = new Cube("box4",quadratic,1);
+	box4 = new Cube("box4",quadratic,box_scale);
 	box4->LoadTexture(&texture[2]);
-	box4->LoadTranslatef(-1.5,0.5f,18);
-	box4->LoadRotatef(30,0,-1*box_scale,0);
-	box4->LoadScalef(box_scale,box_scale,box_scale);
+	box4->LoadTranslatef(-1.5,box_scale,18);
+	box4->LoadRotatef(30,0,-1,0);
 	o->add(box4);
 	box4->add(box2);
 	box4->add(box3);
+	
+	
+	
+	tree2 = new Model("tree5",quadratic,2.0f);
+	tree2->LoadTranslatef(3,2,0);
+	tree2->LoadTexture(&texture[2]);
+	tree2->LoadModel("data/tree2.obj");
+	
+	tree3 = new Model("tree6",quadratic,2.0f);
+	tree3->LoadTranslatef(-3,2,0);
+	tree3->LoadTexture(&texture[2]);
+	tree3->LoadModel("data/tree3.obj");
+	
+	//lots of boxes
+	box4 = new Cube("box5",quadratic,box_scale);
+	box4->LoadTexture(&texture[2]);
+	box4->LoadTranslatef(-8,box_scale/2,18);
+	box4->LoadRotatef(30,0,-1,0);
+	o->add(box4);
+	box4->add(box2);
+	box4->add(box3);
+	box4->add(tree2);
+	
+	box4 = new Cube("box6",quadratic,box_scale);
+	box4->LoadTexture(&texture[2]);
+	box4->LoadTranslatef(8,box_scale/2,20);
+	box4->LoadRotatef(30,0,-1,0);
+	o->add(box4);
+	box4->add(box2);
+	box4->add(box3);
+	box4->add(tree2);
+	
+	box4 = new Cube("box7",quadratic,box_scale);
+	box4->LoadTexture(&texture[2]);
+	box4->LoadTranslatef(8,box_scale/2,35);
+	box4->LoadRotatef(30,0,-1,0);
+	o->add(box4);
+	box4->add(box2);
+	box4->add(box3);
+	box4->add(tree3);
+	
+	box4 = new Cube("box8",quadratic,box_scale);
+	box4->LoadTexture(&texture[2]);
+	box4->LoadTranslatef(-5,box_scale/2,35);
+	box4->LoadRotatef(60,0,-1,0);
+	o->add(box4);
+	box4->add(box2);
+	box4->add(box3);
+	box4->add(tree3);
+	box4->add(tree2);
+	
+	box4 = new Cube("box8",quadratic,box_scale);
+	box4->LoadTexture(&texture[2]);
+	box4->LoadTranslatef(-12,box_scale/2,33);
+	box4->LoadRotatef(35,0,-1,0);
+	o->add(box4);
+	box4->add(box2);
+	box4->add(box3);
+	box4->add(tree3);
+	box4->add(tree2);
+	
+	
+	//trees
+	
+	tree2 = new Model("tree7",quadratic,2.0f);
+	tree2->LoadTranslatef(12,2,33);
+	tree2->LoadTexture(&texture[2]);
+	tree2->LoadModel("data/tree2.obj");
+	
+	tree3 = new Model("tree8",quadratic,2.0f);
+	tree3->LoadTranslatef(-3,0,0);
+	tree3->LoadTexture(&texture[2]);
+	tree3->LoadModel("data/tree3.obj");
+	
+	tree4 = new Model("tree9",quadratic,2.5f);
+	tree4->LoadTranslatef(2,0,2);
+	tree4->LoadTexture(&texture[2]);
+	tree4->LoadModel("data/tree4.obj");
+	
+	tree2->add(tree3);
+	tree2->add(tree4);
+	o->add(tree2);
 	
 	
 	return o;
