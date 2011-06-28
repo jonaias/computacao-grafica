@@ -272,7 +272,7 @@ int drawGLScene( void )
 	if (t - T0 >= 5000) {
 	    GLfloat seconds = (t - T0) / 1000.0;
 	    GLfloat fps = Frames / seconds;
-	    printf("%d frames in %g seconds = %g FPS\n", Frames, seconds, fps);
+	    TRACE("%d frames in %g seconds = %g FPS\n", Frames, seconds, fps);
 	    T0 = t;
 	    Frames = 0;
 	}

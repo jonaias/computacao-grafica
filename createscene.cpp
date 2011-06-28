@@ -80,7 +80,7 @@ Object* createScene(GLUquadricObj *quadratic){
     LoadTexture("data/rays_north.bmp",7);
     LoadTexture("data/rays_south.bmp",8);
     
-    Object *o,*plano_inicial, *plano_final, *degrau, *skybox, *box1,*box2,*box3;
+    Object *o,*plano_inicial, *plano_final, *degrau, *skybox, *box1,*box2,*box3, *box4;
 	
 	o=NULL;
     
@@ -168,6 +168,16 @@ Object* createScene(GLUquadricObj *quadratic){
 	box3->LoadTranslatef(1,0,0);
 	box3->LoadRotatef(30,0,1,0);
 	box1->add(box3);
+	
+	box4 = new Cube("box4",quadratic,1);
+	box4->LoadTexture(&texture[2]);
+	box4->LoadTranslatef(-1.5,0.5f,18);
+	box4->LoadRotatef(30,0,-1*box_scale,0);
+	box4->LoadScalef(box_scale,box_scale,box_scale);
+	o->add(box4);
+	box4->add(box2);
+	box4->add(box3);
+	
 	
 	return o;
 }
